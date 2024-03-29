@@ -4,6 +4,8 @@ import {
   Controller,
   Delete,
   Get,
+  HttpException,
+  HttpStatus,
   Param,
   Post,
   Put,
@@ -22,7 +24,17 @@ export class SongsController {
 
   @Get()
   findAll() {
-    return this.SongsService.findAll();
+    try {
+      return this.SongsService.findAll();
+    } catch (error) {
+      throw new HttpException(
+        'server error',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+        {
+          cause: error,
+        },
+      );
+    }
   }
 
   @Get(':id')
