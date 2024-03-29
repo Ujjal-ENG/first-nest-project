@@ -1,15 +1,33 @@
-import { Controller, Delete, Get, Param, Put } from '@nestjs/common';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
+import { CreateSongDTO } from './dto/createSongDTO';
+import { SongsService } from './songs.service';
 
 @Controller('songs')
 export class SongsController {
+  constructor(private SongsService: SongsService) {}
+
+  @Post()
+  create(@Body() CreateSongDTO: CreateSongDTO) {
+    return this.SongsService.create(CreateSongDTO);
+  }
+
   @Get()
   findAll() {
-    return 'All the Songs';
+    return this.SongsService.findAll();
   }
 
   @Get(':id')
   findOne(@Param() params: any) {
-    return `only one song can shown and the song id is ${params.id}`;
+    return this.SongsService.findOne(params.id);
   }
   @Put(':id')
   updateOne() {
