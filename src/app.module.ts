@@ -2,12 +2,18 @@ import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { LoggerMiddleware } from './common/middleware/logger.middleware';
+import { DevConfigService } from '../src/common/providers/DevConfigService';
 import { SongsModule } from './songs/songs.module';
-
 @Module({
   imports: [SongsModule],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: DevConfigService,
+      useClass: DevConfigService,
+    },
+  ],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
